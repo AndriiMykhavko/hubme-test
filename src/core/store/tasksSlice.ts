@@ -9,7 +9,7 @@ export interface Task {
   id: TaskId;
 }
 
-export type ActiveFilter = 'all' | 'done';
+export type ActiveFilter = 'all' | 'done' | '';
 
 interface Tasks {
   taskList: Array<Task>;
@@ -19,7 +19,7 @@ interface Tasks {
 
 export const initialState: Tasks = {
   taskList: [],
-  activeFilter: 'all',
+  activeFilter: '',
   searchFieldValue: '',
 };
 
@@ -49,17 +49,36 @@ export const tasksSlice = createSlice({
       state.taskList = updatedArray;
     },
     setFilter: (state, { payload }: PayloadAction<ActiveFilter>) => {
-      state.activeFilter = payload;
+      if (state.activeFilter === payload) {
+        state.activeFilter = '';
+      } else {
+        state.activeFilter = payload;
+      }
     },
     setSearchValue: (state, { payload }: PayloadAction<string>) => {
       state.searchFieldValue = payload;
     },
+  },
+  extraReducers: (builder) => {
+    builder.addMatcher(
+      (action) => action.type === setFilter.type,
+      (state) => {
+        if (state.activeFilter === 'all' && state.searchFieldValue) {
+          state.searchFieldValue = '';
+        }
+      },
+    );
   },
 });
 
 const selectTasks = (state: RootState) => state.tasks;
 
 export const getTasks = createSelector(selectTasks, (tasks) => {
+  if (!tasks.activeFilter && tasks.searchFieldValue) {
+    return tasks.taskList.filter(
+      (item) => item.title.includes(tasks.searchFieldValue) && !item.done,
+    );
+  }
   if (tasks.activeFilter === 'done') {
     return tasks.taskList.filter(
       (item) => item.title.includes(tasks.searchFieldValue) && item.done,

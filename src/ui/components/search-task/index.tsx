@@ -13,7 +13,9 @@ import { ActiveFilter, setFilter, setSearchValue } from '@store/tasksSlice';
 import CustomizedSearchTask from './styles';
 
 const SearchTask: React.FC = () => {
-  const { activeFilter } = useTypedSelector((state) => state.tasks);
+  const { activeFilter, searchFieldValue } = useTypedSelector(
+    (state) => state.tasks,
+  );
 
   const dispatch = useDispatch<AppDispatch>();
 
@@ -33,6 +35,7 @@ const SearchTask: React.FC = () => {
           size="small"
           onChange={handleChange}
           variant="outlined"
+          value={searchFieldValue}
           fullWidth
         />
 
