@@ -70,15 +70,10 @@ const theme = createTheme({
       styleOverrides: {
         root: {
           backgroundColor: '#fff',
-          '&.MuiFormLabel-filled': {
+          '&.MuiFormLabel-filled, &.Mui-focused': {
             textTransform: 'uppercase',
             paddingLeft: '4px',
             fontSize: '10px',
-          },
-          '&.Mui-focused': {
-            fontSize: '10px',
-            paddingLeft: '4px',
-            textTransform: 'uppercase',
           },
         },
       },
