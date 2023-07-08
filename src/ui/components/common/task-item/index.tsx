@@ -34,13 +34,9 @@ const TaskItem: React.FC<Props> = ({
     setToggleOpenPopup((prev) => !prev);
   };
 
-  const handleClose = () => {
-    setToggleOpenPopup(false);
-  };
-
   const handleSuccess = () => {
     onDeleteTask(id);
-    handleClose();
+    togglePopup();
   };
 
   return (
@@ -69,7 +65,7 @@ const TaskItem: React.FC<Props> = ({
       <Popup
         open={toggleOpenPopup}
         onSuccess={handleSuccess}
-        onClosePopup={handleClose}
+        onClosePopup={togglePopup}
       />
     </>
   );
